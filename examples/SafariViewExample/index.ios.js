@@ -5,7 +5,6 @@ import {
   AlertIOS,
   AppRegistry,
   processColor,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -18,19 +17,17 @@ class SafariViewExample extends Component {
   componentDidMount() {
     this.showSubscription= () => {
       console.log("SafariView onShow")
-      StatusBar.setBarStyle("light-content");
     };
     this.dismissSubscription = () => {
       console.log("SafariView onDismiss");
-      StatusBar.setBarStyle("default");
     };
-    SafariView.addEventListener("onShow", this.showSubscription);
-    SafariView.addEventListener("onDismiss", this.dismissSubscription);
+    SafariView.addEventListener("completeInitialLoad", this.showSubscription);
+    SafariView.addEventListener("finish", this.dismissSubscription);
   }
 
   componentWillUnmount() {
-    SafariView.removeEventListener("onShow", this.showSubscription);
-    SafariView.removeEventListener("onDismiss", this.dismissSubscription);
+    SafariView.removeEventListener("completeInitialLoad", this.showSubscription);
+    SafariView.removeEventListener("finish", this.dismissSubscription);
   }
 
   render() {
@@ -66,16 +63,6 @@ class SafariViewExample extends Component {
       tintColor: "rgb(0, 0, 0)",
       fromBottom: true
     });
-  }
-
-  _isAvailable() {
-    SafariView.isAvailable()
-      .then(success => {
-        AlertIOS.alert('SFSafariView available.');
-      })
-      .catch(error => {
-        AlertIOS.alert('SFSafariView not available.');
-      });
   }
 }
 
