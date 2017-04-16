@@ -27,18 +27,6 @@ export default {
     SafariViewManager.dismiss();
   },
 
-  isAvailable() {
-    return new Promise((resolve, reject) => {
-      SafariViewManager.isAvailable((error) => {
-        if (error) {
-          return reject(error);
-        }
-
-        resolve(true);
-      });
-    });
-  },
-
   addEventListener(event, listener) {
     return moduleEventEmitter.addListener(event, listener);
   },

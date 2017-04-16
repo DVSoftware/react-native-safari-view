@@ -71,16 +71,6 @@ RCT_EXPORT_METHOD(show:(NSDictionary *)args
     }];
 }
 
-RCT_EXPORT_METHOD(isAvailable:(RCTResponseSenderBlock)callback)
-{
-    if ([SFSafariViewController class]) {
-        // SafariView is available
-        return callback(@[[NSNull null], @true]);
-    } else {
-        return callback(@[RCTMakeError(@"[SafariView] SafariView is unavailable.", nil, nil)]);
-    }
-}
-
 RCT_EXPORT_METHOD(dismiss)
 {
     [self.safariView dismissViewControllerAnimated:true completion:nil];
