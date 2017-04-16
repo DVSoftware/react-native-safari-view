@@ -1,14 +1,11 @@
-/**
- * @providesModule SafariViewManager
- */
-'use strict';
 import {
   NativeModules,
   NativeEventEmitter,
   processColor
 } from 'react-native';
-const NativeSafariViewManager = NativeModules.SafariViewManager;
-const moduleEventEmitter = new NativeEventEmitter(NativeSafariViewManager);
+
+const SafariViewManager = NativeModules.SafariViewManager;
+const moduleEventEmitter = new NativeEventEmitter(SafariViewManager);
 
 /**
  * High-level docs for the SafariViewManager iOS API can be written here.
@@ -23,16 +20,16 @@ export default {
       options.barTintColor = processColor(options.barTintColor);
     }
 
-    return NativeSafariViewManager.show(options);
+    return SafariViewManager.show(options);
   },
 
   dismiss() {
-    NativeSafariViewManager.dismiss();
+    SafariViewManager.dismiss();
   },
 
   isAvailable() {
     return new Promise((resolve, reject) => {
-      NativeSafariViewManager.isAvailable((error) => {
+      SafariViewManager.isAvailable((error) => {
         if (error) {
           return reject(error);
         }
