@@ -26,6 +26,8 @@ type Props = {
   onFinish?: () => void,
 }
 
+type EventType = 'completeInitialLoad' | 'finish'
+
 export default class SafariView extends React.Component<void, Props, void> {
   static show(url, options={}) {
     const {
@@ -47,11 +49,11 @@ export default class SafariView extends React.Component<void, Props, void> {
     SafariViewManager.dismiss();
   }
 
-  static addEventListener(event, listener: Function) {
+  static addEventListener(event: EventType, listener: Function) {
     return moduleEventEmitter.addListener(event, listener);
   }
 
-  static removeEventListener(event, listener: Function) {
+  static removeEventListener(event: EventType, listener: Function) {
     return moduleEventEmitter.removeListener(event, listener);
   }
 
