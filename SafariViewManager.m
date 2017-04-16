@@ -15,42 +15,28 @@ RCT_EXPORT_MODULE()
 
 //MARK: External API
 
-RCT_EXPORT_METHOD(show:(NSDictionary *)args
+RCT_EXPORT_METHOD(show:(NSURL *)url
+                  options:(NSDictionary *)options
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    NSURL *url = [NSURL URLWithString:args[@"url"]];
-    UIColor *tintColorString = args[@"tintColor"];
-    UIColor *barTintColorString = args[@"barTintColor"];
-    BOOL fromBottom = [args[@"fromBottom"] boolValue];
-    BOOL entersReaderIfAvailable = [args[@"readerMode"] boolValue];
-
-    // Error if no url is passed
-    if (!args[@"url"]) {
-        RCTLogError(@"[SafariView] You must specify a url.");
-        return;
-    }
+    UIColor *controlTintColor = [RCTConvert UIColor:options[@"preferredControlTintColor"]];
+    UIColor *barTintColor = [RCTConvert UIColor:options[@"preferredBarTintColor"]];
+    BOOL fromBottom = [options[@"fromBottom"] boolValue];
+    BOOL entersReader = [options[@"entersReaderIfAvailable"] boolValue];
 
     // Initialize the Safari View
-    self.safariView = [[SFSafariViewController alloc] initWithURL:url entersReaderIfAvailable:entersReaderIfAvailable];
+    self.safariView = [[SFSafariViewController alloc] initWithURL:url entersReaderIfAvailable:entersReader];
     self.safariView.delegate = self;
 
     // Set tintColor if available
-    if (tintColorString) {
-        UIColor *tintColor = [RCTConvert UIColor:tintColorString];
-        if ([self.safariView respondsToSelector:@selector(setPreferredControlTintColor:)]) {
-            [self.safariView setPreferredControlTintColor:tintColor];
-        } else {
-            [self.safariView.view setTintColor:tintColor];
-        }
+    if (controlTintColor) {
+        self.safariView.preferredControlTintColor = controlTintColor;
     }
 
     // Set barTintColor if available
-    if (barTintColorString) {
-        UIColor *barTintColor = [RCTConvert UIColor:barTintColorString];
-        if ([self.safariView respondsToSelector:@selector(setPreferredBarTintColor:)]) {
-            [self.safariView setPreferredBarTintColor:barTintColor];
-        }
+    if (barTintColor) {
+        self.safariView.preferredBarTintColor = barTintColor;
     }
 
     // Set modal transition style
@@ -59,15 +45,15 @@ RCT_EXPORT_METHOD(show:(NSDictionary *)args
     }
 
     UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    
+
     // Cycle through view controllers to get the view closest to the foreground
     while (ctrl.presentedViewController) {
         ctrl = ctrl.presentedViewController;
     }
-    
+
     // Display the Safari View
     [ctrl presentViewController:self.safariView animated:YES completion:^{
-        resolve(@true);
+        resolve(nil);
     }];
 }
 

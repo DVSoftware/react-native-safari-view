@@ -57,11 +57,11 @@ class SafariViewExample extends Component {
   }
 
   _clickHandler() {
-    SafariView.show({
-      url: 'http://twitter.com/naoufal',
-      readerMode: true,
-      tintColor: "rgb(0, 0, 0)",
-      fromBottom: true
+    SafariView.show('http://twitter.com/naoufal', {
+      entersReaderIfAvailable: true,
+      preferredControlTintColor: "green",
+      preferredBarTintColor: "orange",
+      fromBottom: true,
     });
   }
 }

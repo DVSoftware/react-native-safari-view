@@ -12,15 +12,20 @@ const moduleEventEmitter = new NativeEventEmitter(SafariViewManager);
  */
 
 export default {
-  show(options) {
-    if (options && options.tintColor) {
-      options.tintColor = processColor(options.tintColor);
-    }
-    if (options && options.barTintColor) {
-      options.barTintColor = processColor(options.barTintColor);
-    }
+  show(url, options={}) {
+    const {
+      preferredControlTintColor,
+      preferredBarTintColor,
+      entersReaderIfAvailable,
+      fromBottom,
+    } = options
 
-    return SafariViewManager.show(options);
+    return SafariViewManager.show(url, {
+      preferredControlTintColor: processColor(preferredControlTintColor),
+      preferredBarTintColor: processColor(preferredBarTintColor),
+      entersReaderIfAvailable,
+      fromBottom,
+    });
   },
 
   dismiss() {
