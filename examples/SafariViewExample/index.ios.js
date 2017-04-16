@@ -78,7 +78,7 @@ class SafariViewExample extends Component {
             preferredControlTintColor="green"
             preferredBarTintColor="orange"
             fromBottom
-            onFinish={() => undefined}
+            onFinish={() => this.setState({showSafariView: false})}
           />}
       </View>
     );

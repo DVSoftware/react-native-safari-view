@@ -62,6 +62,32 @@ export default class SafariView extends React.Component<void, Props, void> {
     this.dontDismissOnUnmount = true
   }
 
+  unsubscribe: () => void
+
+  subscribeToEvents(onCompleteInitialLoad?: Function, onFinish?: Function) {
+    SafariView.addEventListener('finish', this.disableDismissOnUnmount)
+
+    if (onCompleteInitialLoad) {
+      SafariView.addEventListener('completeInitialLoad', onCompleteInitialLoad)
+    }
+
+    if (onFinish) {
+      SafariView.addEventListener('finish', onFinish)
+    }
+
+    return () => {
+      SafariView.removeEventListener('finish', this.disableDismissOnUnmount)
+
+      if (onCompleteInitialLoad) {
+        SafariView.removeEventListener('completeInitialLoad', onCompleteInitialLoad)
+      }
+
+      if (onFinish) {
+        SafariView.removeEventListener('finish', onFinish)
+      }
+    }
+  }
+
   componentWillMount() {
     if (nrActiveInstances++ > 0) {
       this.noop = true
@@ -72,15 +98,7 @@ export default class SafariView extends React.Component<void, Props, void> {
     const {initialUrl, onCompleteInitialLoad, onFinish, ...rest} = this.props
 
     SafariView.show(initialUrl, rest)
-    SafariView.addEventListener('finish', this.disableDismissOnUnmount)
-
-    if (onCompleteInitialLoad) {
-      SafariView.addEventListener('completeInitialLoad', onCompleteInitialLoad)
-    }
-
-    if (onFinish) {
-      SafariView.addEventListener('finish', onFinish)
-    }
+    this.unsubscribe = this.subscribeToEvents(onCompleteInitialLoad, onFinish)
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -98,11 +116,15 @@ export default class SafariView extends React.Component<void, Props, void> {
   componentWillUnmount() {
     --nrActiveInstances
 
-    if (this.noop || this.dontDismissOnUnmount) {
+    if (this.noop) {
       return
     }
 
-    SafariView.dismiss()
+    this.unsubscribe()
+
+    if (!this.dontDismissOnUnmount) {
+      SafariView.dismiss()
+    }
   }
 
   render() {
