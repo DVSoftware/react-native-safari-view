@@ -1,3 +1,3 @@
-import SafariViewManager from './SafariViewManager';
+import SafariViewManager from "./SafariViewManager";
 
 export default SafariViewManager;

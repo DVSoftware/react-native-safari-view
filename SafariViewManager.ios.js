@@ -1,12 +1,8 @@
 // @flow
 
-import React from 'react';
-import {
-  NativeModules,
-  NativeEventEmitter,
-  processColor
-} from 'react-native';
-import shallowEqual from 'fbjs/lib/shallowEqual'
+import React from "react";
+import { NativeModules, NativeEventEmitter, processColor } from "react-native";
+import shallowEqual from "fbjs/lib/shallowEqual";
 
 const SafariViewManager = NativeModules.SafariViewManager;
 const moduleEventEmitter = new NativeEventEmitter(SafariViewManager);
@@ -15,33 +11,33 @@ const moduleEventEmitter = new NativeEventEmitter(SafariViewManager);
  * High-level docs for the SafariViewManager iOS API can be written here.
  */
 
-let nrActiveInstances = 0
+let nrActiveInstances = 0;
 
 type Props = {
   initialUrl: string,
   entersReaderIfAvailable?: boolean,
   preferredBarTintColor?: string,
   preferredControlTintColor?: string,
-  onCompleteInitialLoad?: (success: bool) => void,
-  onFinish?: () => void,
-}
+  onCompleteInitialLoad?: (success: boolean) => void,
+  onFinish?: () => void
+};
 
-type EventType = 'completeInitialLoad' | 'finish'
+type EventType = "completeInitialLoad" | "finish";
 
 export default class SafariView extends React.Component<void, Props, void> {
-  static show(url, options={}) {
+  static show(url, options = {}) {
     const {
       preferredControlTintColor,
       preferredBarTintColor,
       entersReaderIfAvailable,
-      fromBottom,
-    } = options
+      fromBottom
+    } = options;
 
     return SafariViewManager.show(url, {
       preferredControlTintColor: processColor(preferredControlTintColor),
       preferredBarTintColor: processColor(preferredBarTintColor),
       entersReaderIfAvailable,
-      fromBottom,
+      fromBottom
     });
   }
 
@@ -57,79 +53,86 @@ export default class SafariView extends React.Component<void, Props, void> {
     return moduleEventEmitter.removeListener(event, listener);
   }
 
-  noop = false
-  dontDismissOnUnmount = false
+  noop = false;
+  dontDismissOnUnmount = false;
 
   disableDismissOnUnmount = () => {
-    this.dontDismissOnUnmount = true
-  }
+    this.dontDismissOnUnmount = true;
+  };
 
-  unsubscribe: () => void
+  unsubscribe: () => void;
 
   subscribeToEvents(onCompleteInitialLoad?: Function, onFinish?: Function) {
-    SafariView.addEventListener('finish', this.disableDismissOnUnmount)
+    SafariView.addEventListener("finish", this.disableDismissOnUnmount);
 
     if (onCompleteInitialLoad) {
-      SafariView.addEventListener('completeInitialLoad', onCompleteInitialLoad)
+      SafariView.addEventListener("completeInitialLoad", onCompleteInitialLoad);
     }
 
     if (onFinish) {
-      SafariView.addEventListener('finish', onFinish)
+      SafariView.addEventListener("finish", onFinish);
     }
 
     return () => {
-      SafariView.removeEventListener('finish', this.disableDismissOnUnmount)
+      SafariView.removeEventListener("finish", this.disableDismissOnUnmount);
 
       if (onCompleteInitialLoad) {
-        SafariView.removeEventListener('completeInitialLoad', onCompleteInitialLoad)
+        SafariView.removeEventListener(
+          "completeInitialLoad",
+          onCompleteInitialLoad
+        );
       }
 
       if (onFinish) {
-        SafariView.removeEventListener('finish', onFinish)
+        SafariView.removeEventListener("finish", onFinish);
       }
-    }
+    };
   }
 
   componentWillMount() {
     if (nrActiveInstances++ > 0) {
-      this.noop = true
-      console.warn(`You can't mount more than on instance of SafariView simultaneously. All instanes other than the first are no-ops.`)
-      return
+      this.noop = true;
+      console.warn(
+        `You can't mount more than on instance of SafariView simultaneously. All instanes other than the first are no-ops.`
+      );
+      return;
     }
 
-    const {initialUrl, onCompleteInitialLoad, onFinish, ...rest} = this.props
+    const { initialUrl, onCompleteInitialLoad, onFinish, ...rest } = this.props;
 
-    SafariView.show(initialUrl, rest)
-    this.unsubscribe = this.subscribeToEvents(onCompleteInitialLoad, onFinish)
+    SafariView.show(initialUrl, rest);
+    this.unsubscribe = this.subscribeToEvents(onCompleteInitialLoad, onFinish);
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (this.noop) {
-      return
+      return;
     }
 
     if (shallowEqual(nextProps, this.props)) {
-      return
+      return;
     }
 
-    console.warn("SafariView doesn\'t support updating props after initial render.")
+    console.warn(
+      "SafariView doesn't support updating props after initial render."
+    );
   }
 
   componentWillUnmount() {
-    --nrActiveInstances
+    --nrActiveInstances;
 
     if (this.noop) {
-      return
+      return;
     }
 
-    this.unsubscribe()
+    this.unsubscribe();
 
     if (!this.dontDismissOnUnmount) {
-      SafariView.dismiss()
+      SafariView.dismiss();
     }
   }
 
   render() {
-    return null
+    return null;
   }
-};
+}

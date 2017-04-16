@@ -1,6 +1,5 @@
-
 export default {
   show: function() {
-    return Promise.reject()
+    return Promise.reject();
   }
 };
