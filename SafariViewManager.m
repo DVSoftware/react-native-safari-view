@@ -15,7 +15,9 @@ RCT_EXPORT_MODULE()
 
 //MARK: External API
 
-RCT_EXPORT_METHOD(show:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(show:(NSDictionary *)args
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSURL *url = [NSURL URLWithString:args[@"url"]];
     UIColor *tintColorString = args[@"tintColor"];
@@ -64,7 +66,9 @@ RCT_EXPORT_METHOD(show:(NSDictionary *)args callback:(RCTResponseSenderBlock)cal
     }
     
     // Display the Safari View
-    [ctrl presentViewController:self.safariView animated:YES completion:nil];
+    [ctrl presentViewController:self.safariView animated:YES completion:^{
+        resolve(@true);
+    }];
 }
 
 RCT_EXPORT_METHOD(isAvailable:(RCTResponseSenderBlock)callback)
