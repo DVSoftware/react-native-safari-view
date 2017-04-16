@@ -14,6 +14,10 @@ import {
 import SafariView from 'react-native-safari-view';
 
 class SafariViewExample extends Component {
+  state = {
+    showSafariView: false
+  }
+
   componentDidMount() {
     this.showSubscription= () => {
       console.log("SafariView onShow")
@@ -49,9 +53,33 @@ class SafariViewExample extends Component {
             color: '#fff',
             fontWeight: '600'
           }}>
-            Show Safari View
+            Show Safari View imperatively
           </Text>
         </TouchableHighlight>
+
+        <TouchableHighlight
+          style={styles.btn}
+          onPress={() => this.setState({showSafariView: true})}
+          underlayColor="#0380BE"
+          activeOpacity={1}
+        >
+          <Text style={{
+            color: '#fff',
+            fontWeight: '600'
+          }}>
+            Show Safari View declaratively
+          </Text>
+        </TouchableHighlight>
+
+        {this.state.showSafariView &&
+          <SafariView
+            initialUrl="http://twitter.com/naoufal"
+            entersReaderIfAvailable
+            preferredControlTintColor="green"
+            preferredBarTintColor="orange"
+            fromBottom
+            onFinish={() => undefined}
+          />}
       </View>
     );
   }
@@ -80,14 +108,14 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   instructions: {
-    marginBottom: 5,
+    marginBottom: 205,
     color: '#333333',
     fontSize: 13,
     textAlign: 'center'
   },
   btn: {
     borderRadius: 3,
-    marginTop: 200,
+    marginBottom: 30,
     paddingTop: 15,
     paddingBottom: 15,
     paddingLeft: 15,
