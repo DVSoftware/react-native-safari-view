@@ -1,15 +1,14 @@
 {
-  "name": "react-native-safari-view",
+  "name": "react-native-safari",
   "version": "2.1.0",
-  "description": "A React Native wrapper for Safari View Controller",
+  "description": "A React Native wrapper for SafariViewController",
   "main": "index",
   "scripts": {
-    "lint": "node_modules/.bin/eslint .",
-    "test": "npm run lint"
+    "precommit": "lint-staged"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/naoufal/react-native-safari-view.git"
+    "url": "https://github.com/nfcampos/react-native-safari.git"
   },
   "keywords": [
     "react-native",
@@ -26,13 +25,20 @@
   "author": "Naoufal Kadhom <naoufalkadhom@gmail.com> (https://github.com/naoufal)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/naoufal/react-native-safari-view/issues"
+    "url": "https://github.com/nfcampos/react-native-safari/issues"
   },
-  "homepage": "https://github.com/naoufal/react-native-safari-view",
+  "homepage": "https://github.com/nfcampos/react-native-safari",
   "devDependencies": {
-    "eslint": "2.0.0",
-    "eslint-plugin-react": "3.0.0",
-    "flow-bin": "^0.40.0"
+    "flow-bin": "^0.40.0",
+    "husky": "^0.13.3",
+    "lint-staged": "^3.4.0",
+    "prettier": "^1.1.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  }
 }
