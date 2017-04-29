@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import {
   AlertIOS,
   AppRegistry,
@@ -9,18 +9,18 @@ import {
   Text,
   TouchableHighlight,
   View
-} from 'react-native';
+} from "react-native";
 
-import SafariView from 'react-native-safari-view';
+import SafariView from "react-native-safari";
 
 class SafariViewExample extends Component {
   state = {
     showSafariView: false
-  }
+  };
 
   componentDidMount() {
-    this.showSubscription= () => {
-      console.log("SafariView onShow")
+    this.showSubscription = () => {
+      console.log("SafariView onShow");
     };
     this.dismissSubscription = () => {
       console.log("SafariView onDismiss");
@@ -30,7 +30,10 @@ class SafariViewExample extends Component {
   }
 
   componentWillUnmount() {
-    SafariView.removeEventListener("completeInitialLoad", this.showSubscription);
+    SafariView.removeEventListener(
+      "completeInitialLoad",
+      this.showSubscription
+    );
     SafariView.removeEventListener("finish", this.dismissSubscription);
   }
 
@@ -38,10 +41,10 @@ class SafariViewExample extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          react-native-safari-view
+          react-native-safari
         </Text>
         <Text style={styles.instructions}>
-          github.com/naoufal/react-native-safari-view
+          github.com/naoufal/react-native-safari
         </Text>
         <TouchableHighlight
           style={styles.btn}
@@ -49,24 +52,28 @@ class SafariViewExample extends Component {
           underlayColor="#0380BE"
           activeOpacity={1}
         >
-          <Text style={{
-            color: '#fff',
-            fontWeight: '600'
-          }}>
+          <Text
+            style={{
+              color: "#fff",
+              fontWeight: "600"
+            }}
+          >
             Show Safari View imperatively
           </Text>
         </TouchableHighlight>
 
         <TouchableHighlight
           style={styles.btn}
-          onPress={() => this.setState({showSafariView: true})}
+          onPress={() => this.setState({ showSafariView: true })}
           underlayColor="#0380BE"
           activeOpacity={1}
         >
-          <Text style={{
-            color: '#fff',
-            fontWeight: '600'
-          }}>
+          <Text
+            style={{
+              color: "#fff",
+              fontWeight: "600"
+            }}
+          >
             Show Safari View declaratively
           </Text>
         </TouchableHighlight>
@@ -78,18 +85,18 @@ class SafariViewExample extends Component {
             preferredControlTintColor="green"
             preferredBarTintColor="orange"
             fromBottom
-            onFinish={() => this.setState({showSafariView: false})}
+            onFinish={() => this.setState({ showSafariView: false })}
           />}
       </View>
     );
   }
 
   _clickHandler() {
-    SafariView.show('http://twitter.com/naoufal', {
+    SafariView.show("http://twitter.com/naoufal", {
       entersReaderIfAvailable: true,
       preferredControlTintColor: "green",
       preferredBarTintColor: "orange",
-      fromBottom: true,
+      fromBottom: true
     });
   }
 }
@@ -97,21 +104,21 @@ class SafariViewExample extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF"
   },
   welcome: {
     margin: 10,
     fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'center'
+    fontWeight: "600",
+    textAlign: "center"
   },
   instructions: {
     marginBottom: 205,
-    color: '#333333',
+    color: "#333333",
     fontSize: 13,
-    textAlign: 'center'
+    textAlign: "center"
   },
   btn: {
     borderRadius: 3,
@@ -120,8 +127,8 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: 15,
     paddingRight: 15,
-    backgroundColor: '#0391D7'
+    backgroundColor: "#0391D7"
   }
 });
 
-AppRegistry.registerComponent('SafariViewExample', () => SafariViewExample);
+AppRegistry.registerComponent("SafariViewExample", () => SafariViewExample);

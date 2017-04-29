@@ -2462,7 +2462,7 @@ react-devtools-core@^2.0.8:
     cross-env "^3.1.4"
     ws "^2.0.3"
 
-"react-native-safari-view@file:../..":
+"react-native-safari@file:../..":
   version "2.0.0"
 
 react-native@0.43.3:
